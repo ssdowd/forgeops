@@ -316,10 +316,11 @@ CREATE TABLE openidm.files (
 -- Table openidm.relationshipresources
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS openidm.relationshipresources (
-  originresourcecollection VARCHAR(255) NOT NULL ,
-  originproperty VARCHAR(100) NOT NULL ,
-  refresourcecollection VARCHAR(255) NOT NULL ,
-  PRIMARY KEY ( originresourcecollection, originproperty,	refresourcecollection));
+  originresourcecollection VARCHAR(255) NOT NULL,
+  originproperty VARCHAR(100) NOT NULL,
+  refresourcecollection VARCHAR(255) NOT NULL,
+  originfirst BOOL NOT NULL,
+  PRIMARY KEY ( originresourcecollection, originproperty, refresourcecollection, originfirst ));
 
 create or replace
 function fn_relationshiprefs() returns trigger as
