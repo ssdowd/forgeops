@@ -1,3 +1,10 @@
+domain: .frock.aws.avalonconsult.net
+config:
+    importPath: /git/config/6.5/default/am/empty-import
+image:
+  repository: gcr.io/forgerock-io/amster
+
+
 # config:
 #   importPath: /git/config/6.0/identity-platform-examples/am-ds
 #   exportPath: /tmp/amster

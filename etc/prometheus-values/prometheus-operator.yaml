@@ -14,7 +14,9 @@ global:
 ##
 prometheusConfigReloader:
   repository: quay.io/coreos/prometheus-config-reloader
-  tag: v0.20.0
+  tag: v0.33.0
+  # fix for cRashLoop on alertmanager
+  # tag: v0.20.0
 
 ## Configmap-reload image to use for reloading configmaps
 ##

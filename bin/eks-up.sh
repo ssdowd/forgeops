@@ -44,6 +44,10 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
+# SSD - add this...
+export KUBECONFIG=~/.kube/config-${EKS_CLUSTER_NAME}
+
+
 # Create worker nodes
 ./eks-create-worker-nodes.sh
 
@@ -85,4 +89,4 @@ done
 # Add Prometheus
 ./deploy-prometheus.sh
 
-echo "Please add 'export KUBECONFIG=$KUBECONFIG:~/.kube/config-eks' to your bash_profile"
+echo "Please add \'export KUBECONFIG=$KUBECONFIG:~/.kube/config-${EKS_CUSTER_NAME}\' to your bash_profile"

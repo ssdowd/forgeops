@@ -3,10 +3,16 @@
 # for your DNS domain 
 
 #domain: .freng.org
-domain: .frk8s.net
+# domain: .frk8s.net
+# domain: .forgerock.k8s.aws.avalonconsult.net
+# SSD: Note to self: don't add the namespace here...
+domain: .k8s.aws.avalonconsult.net
 
 #fqdn: login.small.freng.org
-fqdn: login.prod.frk8s.net
+# fqdn: login.prod.frk8s.net
+fqdn: login.prod.k8s.aws.avalonconsult.net
+# SSD: Note to self - namespace above is OK.
+
 
 # Install passwords.
 amadminPassword: password

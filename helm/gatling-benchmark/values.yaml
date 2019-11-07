@@ -2,7 +2,8 @@
 # This is a YAML-formatted file.
 
 # Domain on which reports will be available
-domain: .forgeops.com
+# domain: .forgeops.com
+domain: .k8s.aws.avalonconsult.net
 
 # Gatling image with tests.
 # Dockerfile for this image can be found in forgeops/docker/gatling
@@ -46,7 +47,10 @@ benchmark:
   # To run multiple tests, syntax is as following:
   # testname: "am.AMAccessTokenSim am.AMRestAuthNSim"
 
-  testname: am.AMAccessTokenSim
+  # testname: am.AMAccessTokenSim
+  # testname: am.AMRestAuthNSim
+  # testname: idm.IDMCreateManagedUsers
+  tesname: ig.IGReverseProxyWebSim
   
   # By default, simulation will be run automatically after deployment.
   # Change to false force Gatling to wait for trigger.
@@ -56,11 +60,11 @@ benchmark:
   
 
   # How many users we want to use for benchmark
-  users: "1000"
+  users: "1000000"
   # How many user threads we want to use for benchmark
-  concurrency: 5
+  concurrency: 50
   # Duration of test in seconds
-  duration: 60
+  duration: 600
   # Logout percent in authn testnames(0 disables logout)
   logoutpercent: 0
   # Warmup duration

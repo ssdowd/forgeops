@@ -1,7 +1,8 @@
 
 FROM forgerock/downloader 
 
-ARG VERSION="6.5.1-RC3"
+#ARG VERSION="6.5.1-RC3"
+ARG VERSION="6.5.2"
 RUN download -v $VERSION opendj
 
 # JDK 11 tracking - https://bugster.forgerock.org/jira/browse/OPENDJ-5207

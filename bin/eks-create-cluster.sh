@@ -35,9 +35,10 @@ echo ""
 echo "=> Creating cluster called \"${EKS_CLUSTER_NAME}\""
 echo ""
 
-CLUSTER_ARN=$(aws eks create-cluster --name $EKS_CLUSTER_NAME \
-              --role-arn $EKS_ROLE_ARN \
-              --resources-vpc-config subnetIds=$EKS_SUBNETS,securityGroupIds=$EKS_CONTROL_PLANE_SECURITY_GROUP \
+CLUSTER_ARN=$(aws eks create-cluster --name ${EKS_CLUSTER_NAME} \
+              --kubernetes-version "${EKS_CLUSTER_VERSION}" \
+              --role-arn ${EKS_ROLE_ARN} \
+              --resources-vpc-config subnetIds=${EKS_SUBNETS},securityGroupIds=${EKS_CONTROL_PLANE_SECURITY_GROUP} \
               --query cluster.arn --output text)
 
 echo "EKS Cluster is being created.  Usually it takes 10 minutes..."
@@ -45,15 +46,15 @@ echo "EKS Cluster is being created.  Usually it takes 10 minutes..."
 while :
 do
     CLUSTER_STATUS=$(aws eks describe-cluster \
-                      --name $EKS_CLUSTER_NAME --query cluster.status --output text)
+                      --name ${EKS_CLUSTER_NAME} --query cluster.status --output text)
 
-    if [ $CLUSTER_STATUS == "CREATING" ]; then
+    if [ ${CLUSTER_STATUS} == "CREATING" ]; then
       echo "Waiting for EKS cluster to be ready..."
       sleep 60
-    elif [ $CLUSTER_STATUS == "ACTIVE" ]; then
+    elif [ ${CLUSTER_STATUS} == "ACTIVE" ]; then
       echo "EKS cluster is ready"
-      aws eks update-kubeconfig --name $EKS_CLUSTER_NAME --kubeconfig ~/.kube/config-eks
-      export KUBECONFIG=~/.kube/config-eks
+      aws eks update-kubeconfig --name ${EKS_CLUSTER_NAME} --kubeconfig ~/.kube/config-${EKS_CLUSTER_NAME}
+      export KUBECONFIG=~/.kube/config-${EKS_CLUSTER_NAME}
       kubectl config set-context ${CLUSTER_ARN}
       break
     else

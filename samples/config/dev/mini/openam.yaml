@@ -1,0 +1,4 @@
+domain: .frock.aws.avalonconsult.net
+image:
+  repository: gcr.io/forgerock-io/openam
+

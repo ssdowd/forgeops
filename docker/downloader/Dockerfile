@@ -9,8 +9,9 @@ FROM gcr.io/cloud-builders/gcloud:latest
 
 ARG API_KEY
 
-RUN echo $API_KEY >/api_key && \
-    apt-get -q update && apt-get -q install unzip 
+RUN echo $API_KEY >/api_key
+RUN apt-get -q update
+RUN apt-get -q --allow-unauthenticated install unzip 
 
 # RUN apk add --update \
 #         wget \

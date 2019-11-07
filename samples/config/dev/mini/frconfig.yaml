@@ -1,3 +1,8 @@
+domain: .frock.aws.avalonconsult.net
+git:
+  repo: https://github.com/ssdowd/forgeops-init.git
+  branch: sd-config-01
+
 # git:
 #   repo: https://github.com/ForgeRock/forgeops-init.git
 #   branch: master
