@@ -1,30 +1,44 @@
-apiVersion: certmanager.k8s.io/v1alpha1
+apiVersion: cert-manager.io/v1alpha2
 kind: ClusterIssuer
 metadata:
-  name: letsencrypt-prod
-  namespace: kube-system
+  # name: letsencrypt-prod-dns
+  name: letsencrypt-staging-dns
+  # namespace: kube-system
 spec:
   acme:
     # The ACME server URL.
-    server: https://acme-v02.api.letsencrypt.org/directory
+    # server: https://acme-v02.api.letsencrypt.org/directory
+    server: https://acme-staging-v02.api.letsencrypt.org/directory
     # Email address used for ACME registration.
-    email: cloud-deployment@forgerock.com
+    email: hosting-services@aha.org
     # Name of a secret used to store the ACME account private key.
     privateKeySecretRef:
-      name: letsencrypt-prod
-    # Enable the dns01 challenge provider.
-    dns01:
-      providers:
-      # The certificate object uses the below provider to challenge the certificate's requested domain in Google's CloudDNS.
-      # CloudDNS is used as provider for forgeops.com domain only.
-      # Additional providers can be configured.
-      - name: prod-dns
-        clouddns:
-          project: engineering-devops
-          # Service account needs to have Kubernetes Engine Developer and DNS Administrator IAM roles.
-          # After cert manager has been deployed to the cluster, service account json file must be encrypted using bin/encrypt.sh.
-          # The original unencrypted service account key must then be deleted afterwards.
-          serviceAccountSecretRef:
-            name: clouddns
-            key: cert-manager.json
-    
+      # name: letsencrypt-prod-dns
+      name: letsencrypt-staging-dns
+    solvers:
+    # example: cross-account zone management for example.com
+    # this solver uses ambient credentials (i.e. inferred from the environment or EC2 Metadata Service)
+    # to assume a role in a different account
+    - selector:
+        dnsZones:
+          - "k8s.aha.org"
+      dns01:
+        route53:
+          region: us-east-1
+          hostedZoneID:  Z2QFI59R4Q33WF # optional, see bpolicy above
+          role: arn:aws:iam::749657389642:role/dns-manager
+
+    # this solver handles foobar.cloud challenges
+    # and uses explicit credentials
+    - selector:
+        dnsZones:
+          - "iam.aha.org"
+      dns01:
+        route53:
+          region: us-east-1
+          accessKeyID: AKIAIOSFODNN7EXAMPLE
+          secretAccessKeySecretRef:
+            name: prod-route53-credentials-secret
+            key: secret-access-key
+          # you can also assume a role with these credentials
+          role: arn:aws:iam::749657389642:role/dns-manager

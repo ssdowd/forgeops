@@ -1,6 +1,6 @@
 {{ if .Values.certmanager.enabled }}
 # Create a namespaced issuer that uses cert managers built in CA issuer
-apiVersion: certmanager.k8s.io/v1alpha1
+apiVersion: cert-manager.io/v1alpha2
 kind: Issuer
 metadata:
   name: ca-issuer
@@ -22,7 +22,7 @@ data:
 # A secret containing the cert will be created if the request is succesful. Ingress controllers
 # Should reference the secret by name in their tls spec.
 # We currently use a wildcard cert for each namespace.  *.namespace.domain 
-apiVersion: certmanager.k8s.io/v1alpha1
+apiVersion: cert-manager.io/v1alpha2
 kind: Certificate
 metadata:
   name:  wildcard.{{ .Release.Namespace }}{{ .Values.domain }}
