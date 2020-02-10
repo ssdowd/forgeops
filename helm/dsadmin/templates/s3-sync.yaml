@@ -29,7 +29,27 @@ spec:
             # deleted from both the backup filesystem AND the s3 bucket. Another option is to send s3 backups to yet another bucket
             # likely using offline or nearline storage.
             command: [ "/bin/sh", "-c",
-              "yum install -y awscli; aws s3 sync /backup {{ .Values.s3.bucket }}; aws s3 sync {{ .Values.s3.bucket }} /backup --delete; chmod -R g+rw /backup"]
+              "yum install -y awscli; aws s3 sync /backup {{ .Values.s3.bucket }}/${NAMESPACE}; aws s3 sync {{ .Values.s3.bucket }}//${NAMESPACE} /backup --delete; chmod -R g+rw /backup"]
+            env:
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: S3_BUCKET
+              valueFrom:
+                secretKeyRef:
+                  name: s3-backups-secret
+                  key: bucket
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: s3-backups-secret
+                  key: access-key-id
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: s3-backups-secret
+                  key: secret-access-key
             volumeMounts:
             - name: backup
               mountPath: /backup
